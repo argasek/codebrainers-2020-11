@@ -1,0 +1,1 @@
+const answer = prompt('Ile jest 7 * 3 ?');
