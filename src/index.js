@@ -52,22 +52,33 @@
 // console.log(Math.round(Math.PI));
 
 // TABLICZKA MNOŻENIA - gra
-
+//
 const numberOfQuestions = 10;
 let numberOfCorrectAnswers = 0;
-const min = 1;
-const max = 10;
+const minRange = 1;
+const maxRange = 10;
+const passRate = 60;
+const history = [];
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 for (let i = 0; i < numberOfQuestions; i++) {
-    const multiplicand = getRandomNumber(min, max);
-    const multiplier = getRandomNumber(min, max);
+    const multiplicand = getRandomNumber(minRange, maxRange);
+    const multiplier = getRandomNumber(minRange, maxRange);
     const result = multiplicand * multiplier;
-    const answer = prompt('What is the result of multiplication ' + (multiplicand) + ' * ' + (multiplier));
+    const answer = prompt(`What is the result of multiplication ${multiplicand} * ${multiplier}?`);
     if (result === parseInt(answer)) {
         numberOfCorrectAnswers++;
     }
+    history.push([multiplicand, multiplier, result, answer, result === parseInt(answer)]);
 }
+
 const endResult = numberOfCorrectAnswers / numberOfQuestions * 100;
-console.log('Your result is ' + (endResult) + '%');
+
+const isPassed = endResult >= passRate;
+console.log(`Your result is ${endResult} % ${isPassed ? 'Passed' : 'Failed'}`);
+console.log(history);
+
+//const arr = [2,4,7,9,];
+//console.log(arr.length);
+//console.log(arr);
