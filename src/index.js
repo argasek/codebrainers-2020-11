@@ -82,3 +82,8 @@ console.log(history);
 //const arr = [2,4,7,9,];
 //console.log(arr.length);
 //console.log(arr);
+
+// ZADANIE DOMOWE
+// Napisz funkcję, która przyjmuje string jako argument, a zwraca odwrócony string
+// Wykorzystaj metody związane ze Stringiem: String.split(???) oraz String.join(???) oraz Array – dokumentacja MDN
+// Dla chętnych: odwrócenie stringa przy pomocy pętli `for`.
