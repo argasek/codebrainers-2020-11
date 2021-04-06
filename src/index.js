@@ -4,12 +4,6 @@
 // 2. Skorzystaj z funkcji generującej liczby pseudolosowe w zakresie 1-49
 // 2a. Funkcja generująca liczby pseudolosowe
 
-const minLottoNumber = 1;
-const maxLottoNumber = 49;
-function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 // 3. Stwórz na początku tablicę, która zawiera liczby od 1 do 49
 // 4. Losuj do skutku 6 unikalnych liczb w losowaniu – zapisz je do zmiennej wewnątrz pętli
 // 4a. Przy każdym nowym losowaniu 6 liczb sklonuj tablicę do zmiennej znajdującej się w pętli
@@ -19,3 +13,63 @@ function getRandomNumber(min, max) {
 // 7. Zwróć posortowane 6 liczb, które zostały wylosowane, gdy losowanie zostanie zakończone sukcesem
 // 8. Swój kod wypchnij na GitHuba na branchu nazwanym "exercise1-lotto-twojeimie" (np. exercise1-lotto-wojciech)
 // 8a. Stwórz swój branch przy pomocy git branch -D {nazwa brancha}, później commitujemy zmiany i wypychamy naszego brancha do GitHuba
+
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function sortNumbersAsc(a, b) {
+  if (a > b) return 1;
+  if (a < b) return -1;
+  return 0;
+}
+
+function drawLottoNumbers(myNumbers) {
+  const minLottoNumber = 1;
+  const maxLottoNumber = 49;
+  const numbersToDraw = [];
+  let drawnNumbers = [];
+  let numberOfDraws = 0;
+  let isWinningDraw = false;
+
+  for (let i = 1; i <= 49; i++) {
+    numbersToDraw.push(i);
+  }
+
+  console.log(`The draw has been started at ${new Date()}`);
+
+  while (!isWinningDraw) {
+    numberOfDraws = numberOfDraws + 1;
+    const numbersAvailableToDraw = numbersToDraw.slice();
+
+    while (drawnNumbers.length !== 6) {
+      const number = getRandomNumber(minLottoNumber, maxLottoNumber);
+      const indexOfNumber = numbersAvailableToDraw.indexOf(number);
+      if (indexOfNumber > -1) {
+        numbersAvailableToDraw.slice(indexOfNumber, 1);
+        drawnNumbers.push(number);
+      }
+    }
+
+    let isCurrentDrawWinning = true;
+
+    for (let i = 0; i < myNumbers.length; i++) {
+      if (drawnNumbers.indexOf(myNumbers[i]) === -1) {
+        isCurrentDrawWinning = false;
+        break;
+      }
+    }
+
+    if (isCurrentDrawWinning) {
+      isWinningDraw = true;
+    } else {
+      drawnNumbers = [];
+    }
+  }
+
+  console.log(`The draw has been finished at ${new Date()}`);
+  console.log(`Number of draw which was won is ${numberOfDraws}`);
+  console.log(`Winning numbers are ${drawnNumbers.sort(sortNumbersAsc).join(', ')}`);
+}
+
+drawLottoNumbers([10, 41, 47, 8, 13, 45]);
