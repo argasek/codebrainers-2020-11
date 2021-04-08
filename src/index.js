@@ -38,7 +38,7 @@ function drawLottoNumbers(myNumbers) {
   console.log(`The draw has been started at ${new Date()}`);
 
   while (isWinningDraw === false) {
-    numberOfDraws = numberOfDraws + 1;
+    numberOfDraws += 1;
     const numbersAvailableToDraw = numbersToDraw.slice();
     const drawnNumbers = [];
 
