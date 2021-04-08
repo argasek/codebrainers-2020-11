@@ -124,13 +124,95 @@
 // }
 // const arr = [15, 2, 6, 3, 9, 44, 8, 77];
 // console.log(arr.sort(sortNumbers));
+//
+//const arr1 = [13, 8, 9, 11, 7, 15];
+//const arr2 = arr1.slice(1, 5);
+//arr2.splice(1, 1);
+//console.log(arr1);
+//console.log(arr2);
 
-const arr1 = [13, 8, 9, 11, 7, 15];
-const arr2 = arr1.slice(1, 5);
-arr2.splice(1, 1);
-console.log(arr1);
-console.log(arr2);
 
+
+//const arr = ['BMW', 'Wrocław', 'Białystok', 'banan', 'Mikołaj', 'jabłko', 'Baran']
+//console.log(arr.sort());
+//function sortNames(a, b) {
+//     if (a.toLowerCase() > b.toLowerCase()) return 1;
+//     if (a.toLowerCase() < b.toLowerCase()) return -1;
+//     return 0;
+// }
+//
+//console.log(arr.sort(sortNames));
+
+//function consoleLogEachValue(element) {
+//    console.log(element);
+//}
+
+//array.forEach(consoleLogEachValue);
+//function upperCaseEachWord(word) {
+//    return word.toUpperCase();
+//}
+//console.log(arr.map(upperCaseEachWord));
+
+//array.filter(funkcja filtrująca)
+
+//function filterBMW(word) {
+//    return word !== 'BMW'
+//}
+//console.log(arr.filter(filterBMW));
+//
+//console.log(arr.includes('sląsk'));
+//console.log(arr.includes('banan'));
+
+
+ler arr = [1,>= 49]
+
+const result = [min, max];
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+
+}
+function lotto(myNumbers) {
+    const minLottoNumber = 1;
+    const maxLottoNumber = 49;
+    const arrayOfNumbers = [];
+    let isWinningDraw = false;
+    let amountOfDraws = 0;
+
+    for (let i = minLottoNumber; i <= maxLottoNumber; i++) {
+        arrayOfNumbers.push(i);
+    }
+
+    while (isWinningDraw === false) {
+        amountOfDraws = amountOfDraws + 1;
+        const numbersToDraw = arrayOfNumbers.slice();
+        const drawedNumbers = [];
+
+        while (drawedNumbers.length !== 6) {
+            const number = getRandomNumber(minLottoNumber, maxLottoNumber);
+            const indexOfNumbers = arrayOfNumbers.indexOf(number);
+
+            if (indexOfNumbers > -1) {
+                drawedNumbers.push(number);
+                numbersToDraw.splice(indexOfNumbers, 1);
+            }
+        }
+
+        let isCurrentDrawWinning = true;
+        for (let i = 0; i < myNumbers.length; i++) {
+            if (drawedNumbers.indexOf(myNumbers[i]) === -1) {
+                isCurrentDrawWinning = false;
+                break;
+            }
+        }
+
+        if (isCurrentDrawWinning) {
+           isWinningDraw === true;
+        }
+    }
+
+}
+console.log ('the hour of the draw');
+console.log ('draw number where the win is');
 
 
 
