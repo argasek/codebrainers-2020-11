@@ -3,7 +3,6 @@
 // 1a. function lotto(myNumbers) {...}
 // 2. Skorzystaj z funkcji generującej liczby pseudolosowe w zakresie 1-49
 // 2a. Funkcja generująca liczby pseudolosowe
-
 // 3. Stwórz na początku tablicę, która zawiera liczby od 1 do 49
 // 4. Losuj do skutku 6 unikalnych liczb w losowaniu – zapisz je do zmiennej wewnątrz pętli
 // 4a. Przy każdym nowym losowaniu 6 liczb sklonuj tablicę do zmiennej znajdującej się w pętli
@@ -28,19 +27,20 @@ function drawLottoNumbers(myNumbers) {
   const minLottoNumber = 1;
   const maxLottoNumber = 49;
   const numbersToDraw = [];
-  let drawnNumbers = [];
   let numberOfDraws = 0;
   let isWinningDraw = false;
+  let winningNumbers = [];
 
-  for (let i = 1; i <= 49; i++) {
+  for (let i = minLottoNumber; i <= maxLottoNumber; i++) {
     numbersToDraw.push(i);
   }
 
   console.log(`The draw has been started at ${new Date()}`);
 
-  while (!isWinningDraw) {
+  while (isWinningDraw === false) {
     numberOfDraws = numberOfDraws + 1;
     const numbersAvailableToDraw = numbersToDraw.slice();
+    const drawnNumbers = [];
 
     while (drawnNumbers.length !== 6) {
       const number = getRandomNumber(minLottoNumber, maxLottoNumber);
@@ -62,14 +62,13 @@ function drawLottoNumbers(myNumbers) {
 
     if (isCurrentDrawWinning) {
       isWinningDraw = true;
-    } else {
-      drawnNumbers = [];
+      winningNumbers = drawnNumbers.slice();
     }
   }
 
   console.log(`The draw has been finished at ${new Date()}`);
   console.log(`Number of draw which was won is ${numberOfDraws}`);
-  console.log(`Winning numbers are ${drawnNumbers.sort(sortNumbersAsc).join(', ')}`);
+  console.log(`Winning numbers are ${winningNumbers.sort(sortNumbersAsc).join(', ')}`);
 }
 
 drawLottoNumbers([10, 41, 47, 8, 13, 45]);
