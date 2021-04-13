@@ -26,23 +26,90 @@
     -->
     <title>React App</title>
     <style>
-      p {
-        color: blue;
-      }
-      p {
-        color: green;
-      }
-
-      .someOtherClass {
-        color: yellow;
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
       }
 
-      .someClass {
-        color: red;
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
       }
 
-      .exercise button {
-        margin-right: 50px;
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+      }
+
+      #game {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #game div {
+        margin-bottom: 50px;
+      }
+
+      #game #answer {
+        margin: 100px 0;
+      }
+
+      #game #lives {
+        font-size: 24px;
+        line-height: 60px;
+        width: 60px;
+        height: 60px;
+        border: 1px solid black;
+        border-radius: 50%;
+        text-align: center;
+        font-weight: 800;
+      }
+
+      #answer {
+        display: flex;
+        flex-direction: row;
+      }
+
+      #answer .answer-letter {
+        height: 50px;
+        width: 50px;
+        line-height: 50px;
+        font-size: 24px;
+        text-align: center;
+        border-bottom: 3px solid black;
+        margin-right: 20px;
+      }
+
+      #answer .answer-letter.space {
+        margin-right: 75px;
+      }
+
+      #answer .answer-letter:last-of-type {
+        margin-right: 0;
+      }
+
+      #letters {
+        display: flex;
+        flex-direction: row;
+        width: 920px;
+        flex-wrap: wrap;
+      }
+
+      #letters button {
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        background: none;
+        margin: 10px;
       }
     </style>
   </head>
@@ -50,26 +117,56 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <p class="someOtherClass someClass">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc egestas turpis convallis elit posuere, id lobortis augue iaculis.</p>
-
-<!--    <button>Display my XYZ</button>-->
-
-    <div class="exercise">
-      <button value="0">0</button>
-      <button value="1">1</button>
-      <button value="2">2</button>
-      <button value="3">3</button>
-      <button value="4">4</button>
-      <button value="5">5</button>
-      <button value="6">6</button>
-      <button value="7">7</button>
-      <button value="8">8</button>
-      <button value="9">9</button>
+    <div id="game">
+      <div id="category">KATEGORIA</div>
+      <div id="lives">5</div>
+      <div id="answer">
+        <div class="answer-letter"></div>
+        <div class="answer-letter"></div>
+        <div class="answer-letter"></div>
+        <div class="answer-letter"></div>
+        <div class="answer-letter space"></div>
+        <div class="answer-letter"></div>
+        <div class="answer-letter"></div>
+        <div class="answer-letter"></div>
+      </div>
+      <div id="letters">
+        <button value="A">A</button>
+        <button value="Ą">Ą</button>
+        <button value="B">B</button>
+        <button value="C">C</button>
+        <button value="Ć">Ć</button>
+        <button value="D">D</button>
+        <button value="E">E</button>
+        <button value="Ę">Ę</button>
+        <button value="F">F</button>
+        <button value="G">G</button>
+        <button value="H">H</button>
+        <button value="I">I</button>
+        <button value="J">J</button>
+        <button value="K">K</button>
+        <button value="L">L</button>
+        <button value="Ł">Ł</button>
+        <button value="M">M</button>
+        <button value="Ń">Ń</button>
+        <button value="O">O</button>
+        <button value="Ó">Ó</button>
+        <button value="P">P</button>
+        <button value="Q">Q</button>
+        <button value="R">R</button>
+        <button value="S">S</button>
+        <button value="Ś">Ś</button>
+        <button value="T">T</button>
+        <button value="U">U</button>
+        <button value="V">V</button>
+        <button value="W">W</button>
+        <button value="X">X</button>
+        <button value="Y">Y</button>
+        <button value="Z">Z</button>
+        <button value="Ź">Ź</button>
+        <button value="Ż">Ż</button>
+      </div>
     </div>
-
-<!--    <p>In hac habitasse platea dictumst. Suspendisse potenti.</p>-->
-
-<!--    <p>Duis a tempus quam. Vestibulum est est, ullamcorper id auctor ut, convallis at odio. Vivamus malesuada congue vestibulum. Curabitur eu nibh in ipsum interdum convallis. Cras vehicula quam massa, quis eleifend mi luctus ac. Proin urna massa, congue in venenatis et, pulvinar quis nunc.</p>-->
 
     <!--
       This HTML file is a template.
