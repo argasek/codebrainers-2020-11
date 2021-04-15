@@ -145,6 +145,7 @@ addNewParagraphButton.addEventListener('click', () => {
   const newTextNode = document.createTextNode(`${+new Date()}: Lorem ipsum dolor sit amet, consectetur adipiscing elit.`);
   newParagraph.appendChild(newTextNode);
   const referenceChild = listOfParagraphsContainer.children[0];
+  debugger;
   // listOfParagraphsContainer.appendChild(newParagraph);
   // listOfParagraphsContainer.insertBefore(newParagraph, listOfParagraphsContainer.firstChild);
   listOfParagraphsContainer.replaceChild(newParagraph, referenceChild);
@@ -199,3 +200,27 @@ deleteContainer.addEventListener('click', () => {
 //   console.log('interval cleared');
 //   clearInterval(consoleLogEverySecond);
 // });
+
+// const firstPromise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve('Value from the promise');
+//     }, 1000);
+// });
+//
+// firstPromise.then(value => {
+//   console.log(value);
+// });
+
+const loadData = () => fetch('https://cat-fact.herokuapp.com/facts/random?amount=1')
+  .then(res => {
+    if (res.status === 200) {
+      return res.json();
+    }
+  })
+  .catch(err => {
+    console.error(err);
+  });
+
+loadData().then(res => {
+  console.log(res);
+});
