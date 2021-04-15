@@ -78,7 +78,16 @@
         flex-direction: row;
       }
 
-      #answer .answer-letter {
+      #answer .word {
+        display: inline-flex;
+        margin-right: 75px;
+      }
+
+      #answer .word:last-of-type {
+        margin-right: 0;
+      }
+
+      #answer .word .answer-letter {
         height: 50px;
         width: 50px;
         line-height: 50px;
@@ -88,11 +97,7 @@
         margin-right: 20px;
       }
 
-      #answer .answer-letter.space {
-        margin-right: 75px;
-      }
-
-      #answer .answer-letter:last-of-type {
+      #answer .word .answer-letter:last-child {
         margin-right: 0;
       }
 
@@ -121,14 +126,20 @@
       <div id="category">KATEGORIA</div>
       <div id="lives">5</div>
       <div id="answer">
-        <div class="answer-letter"></div>
-        <div class="answer-letter"></div>
-        <div class="answer-letter"></div>
-        <div class="answer-letter"></div>
-        <div class="answer-letter space"></div>
-        <div class="answer-letter"></div>
-        <div class="answer-letter"></div>
-        <div class="answer-letter"></div>
+        <div class="word">
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+        </div>
+        <div class="word">
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+          <div class="answer-letter"></div>
+        </div>
       </div>
       <div id="letters">
         <button value="A">A</button>
