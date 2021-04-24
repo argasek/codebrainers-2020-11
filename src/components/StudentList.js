@@ -1,9 +1,10 @@
 import React from 'react';
 import students from '../models/Students';
+import "./StudentList.css";
 
 function StudentList() {
     return (
-        <table>
+        <table className="student-list" cellSpacing="0" cellPadding="0">
             <tbody>
             {
                 students.map((student,index) => (

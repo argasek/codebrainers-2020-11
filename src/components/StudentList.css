@@ -1,0 +1,8 @@
+.student-list td {
+    border: 1px solid black;
+    padding: 1rem;
+}
+.student-list {
+    border-collapse: collapse;
+    margin-left: 2rem;
+}
