@@ -1,10 +1,21 @@
 import React from 'react';
 import students from '../models/Students';
 
-function StudentList () {
-  return (
-    <div>{ students.map(student => <p>{student.name}: {student.numberOfBoozeUnits}</p>) }</div>
-  );
+function StudentList() {
+    return (
+        <table>
+            <tbody>
+            {
+                students.map((student,index) => (
+                    <tr key={index}>
+                        <td>{student.name}: {student.numberOfBoozeUnits}</td>
+                    </tr>
+                ))
+            }
+
+            </tbody>
+        </table>
+    );
 }
 
 export default StudentList;
