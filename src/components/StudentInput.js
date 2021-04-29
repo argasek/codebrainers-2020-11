@@ -4,6 +4,7 @@ function StudentInput (props) {
   return (
     <input
       value={props.fullName}
+      name={props.inputName}
       type="text"
       style={{
         marginLeft: '1rem',

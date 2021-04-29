@@ -14,7 +14,9 @@ class App extends React.Component {
   }
 
   onChangeExampleStudent = (event) => {
-    this.setState({ exampleStudent: event.target.value });
+    console.log(event.target.name);
+
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   onChangeSecondStudent = (event) => {
@@ -31,6 +33,7 @@ class App extends React.Component {
 
         <form>
           <StudentInput
+            inputName='exampleStudent'
             fullName={this.state.exampleStudent}
             onFullNameChange={this.onChangeExampleStudent}
             padding='0.5rem'
