@@ -1,15 +1,22 @@
 import React from 'react';
-import students from '../models/Students';
 import "./StudentList.css";
 
-function StudentList() {
+function StudentList(props) {
     return (
         <table className="student-list" cellSpacing="0" cellPadding="0">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Number of beers</th>
+                </tr>
+            </thead>
             <tbody>
+
             {
-                students.map((student,index) => (
+                props.students.map((student,index) => (
                     <tr key={index}>
-                        <td>{student.name}: {student.numberOfBoozeUnits}</td>
+                        <td>{student.name}</td>
+                        <td>{student.numberOfBoozeUnits}</td>
                     </tr>
                 ))
             }
