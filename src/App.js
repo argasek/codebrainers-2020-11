@@ -37,6 +37,8 @@ class App extends React.Component {
             <div style={{backgroundColor: '#ddd', padding: '4rem'}}>
                 <StudentItem fullName={this.state.exampleStudent}/>
                 <StudentItem fullName={this.state.secondStudent}/>
+                <StudentItem fullName={this.state.exampleStudent + ' ' + this.state.secondStudent}/>
+
                 <form>
                     <input
                         value={this.state.exampleStudent}
