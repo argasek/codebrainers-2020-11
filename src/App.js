@@ -7,15 +7,24 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            exampleStudent: 'Jarosław I wspaniały'
+            exampleStudent: 'Jarosław I wspaniały',
+            secondStudent: ''
+
+
         };
     }
 
-    onChange = (event) => {
+    onChangeExampleStudent = (event) => {
         console.log(this);
         // this.state.exampleStudent = event.target.value;
         this.setState({exampleStudent: event.target.value});
         console.log('Zaszła zmiana!', this.state.exampleStudent);
+    }
+    onChangeSecondStudent = (event) => {
+        console.log(this);
+        // this.state.exampleStudent = event.target.value;
+        this.setState({secondStudent: event.target.value});
+        console.log('Zaszła zmiana w drugim polu!', this.state.secondStudent);
     }
 
     render() {
@@ -27,7 +36,7 @@ class App extends React.Component {
         return (
             <div style={{backgroundColor: '#ddd', padding: '4rem'}}>
                 <StudentItem fullName={this.state.exampleStudent}/>
-                <StudentItem fullName={'Basia'}/>
+                <StudentItem fullName={this.state.secondStudent}/>
                 <form>
                     <input
                         value={this.state.exampleStudent}
@@ -39,9 +48,10 @@ class App extends React.Component {
                             borderRadius: '4px',
                             fontSize: '150%'
                         }}
-                        onChange={this.onChange}
+                        onChange={this.onChangeExampleStudent}
                     />
                     <input
+                        value={this.state.secondStudent}
                         type="text"
                         style={{
                             margin: '1rem',
@@ -50,7 +60,7 @@ class App extends React.Component {
                             borderRadius: '4px',
                             fontSize: '150%'
                         }}
-                        onChange={this.onChange}
+                        onChange={this.onChangeSecondStudent}
                     />
                 </form>
             </div>
