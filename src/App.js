@@ -8,7 +8,7 @@ function App () {
   return (
       <div style={{backgroundColor: '#ddd', padding: '1rem'}}>
 
-          <StudentList students={students}/>
+          <StudentList students={students} />
           <StudentList students={otherStudents}/>
       </div>
   );
