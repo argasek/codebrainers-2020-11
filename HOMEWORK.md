@@ -1,5 +1,22 @@
 # Homework
 
+## Exercise 13
+
+
+### Task 1.
+
+Modify `Students.js` so that `otherStudents` is not an array
+of objects, but just an array of names. Like:
+
+`['Kasia', 'Wojtek', ...]`
+
+And then modify application in such way that second component
+is used, called `StudentListArray` which displays these names
+in a table similar to the existing one (i.e. without beers).
+
+Modify `<App>` component in such way that user can sort
+students' list alphabetically from A-Z and Z-A.
+
 ## Exercise 12
 
 
