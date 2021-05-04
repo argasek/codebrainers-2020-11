@@ -1,15 +1,17 @@
 import React from 'react';
 
 function StudentInput (props) {
+  let fullName = props.fullName !== '' ? props.fullName : 'Please type a name';
+
   return (
     <input
-      value={props.fullName}
+      value={fullName}
       name={props.inputName}
       type="text"
       style={{
         marginLeft: '1rem',
         padding: props.padding,
-        border: '2px solid #00F',
+        border: props.border,
         borderRadius: '4px',
         fontSize: '150%'
       }}

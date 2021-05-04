@@ -13,14 +13,12 @@ class App extends React.Component {
     };
   }
 
-  onChangeExampleStudent = (event) => {
+  onChangeFullName = (event) => {
     console.log(event.target.name);
 
-    this.setState({ [event.target.name]: event.target.value });
-  };
-
-  onChangeSecondStudent = (event) => {
-    this.setState({ secondStudent: event.target.value });
+    this.setState({
+      [event.target.name]: event.target.value
+    });
   };
 
   render () {
@@ -35,13 +33,16 @@ class App extends React.Component {
           <StudentInput
             inputName='exampleStudent'
             fullName={this.state.exampleStudent}
-            onFullNameChange={this.onChangeExampleStudent}
+            onFullNameChange={this.onChangeFullName}
             padding='0.5rem'
+            border='2px solid #00F'
           />
           <StudentInput
+            inputName='secondStudent'
             fullName={this.state.secondStudent}
-            onFullNameChange={this.onChangeSecondStudent}
-            padding='2.5rem'
+            onFullNameChange={this.onChangeFullName}
+            padding='0.5rem'
+            border='2px solid #F00'
           />
         </form>
       </div>
