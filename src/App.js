@@ -1,50 +1,41 @@
 import React from 'react';
 import './App.css';
-import StudentItem from './components/StudentItem';
-import StudentInput from './components/StudentInput';
+import StudentList from './components/StudentList';
+import { codebrainersStudents, otherStudents } from './models/Students';
 
 class App extends React.Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      exampleStudent: 'Jarosław I wspaniały',
-      secondStudent: ''
+      codebrainersStudents: codebrainersStudents,
+      otherStudents: otherStudents
     };
   }
 
-  onChangeFullName = (event) => {
-    console.log(event.target.name);
-
+  clearStudents = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
+      [event.target.name]: []
+    })
+  }
+
+  sortStudentsByBeers = (event) => {
+    const sortedStudents = this.state[event.target.name].sort((firstStudent, secondStudent) => firstStudent.beers - secondStudent.beers);
+    this.setState({ [event.target.name]: sortedStudents })
+  }
 
   render () {
 
     return (
       <div style={{ backgroundColor: '#ddd', padding: '4rem' }}>
-        <StudentItem fullName={this.state.exampleStudent}/>
-        <StudentItem fullName={this.state.secondStudent}/>
-        <StudentItem fullName={this.state.exampleStudent + ' ' + this.state.secondStudent}/>
 
-        <form>
-          <StudentInput
-            inputName='exampleStudent'
-            fullName={this.state.exampleStudent}
-            onFullNameChange={this.onChangeFullName}
-            padding='0.5rem'
-            border='2px solid #00F'
-          />
-          <StudentInput
-            inputName='secondStudent'
-            fullName={this.state.secondStudent}
-            onFullNameChange={this.onChangeFullName}
-            padding='0.5rem'
-            border='2px solid #F00'
-          />
-        </form>
+        <StudentList students={this.state.codebrainersStudents} />
+        <button name='codebrainersStudents' onClick={this.clearStudents}>Clear student list</button>
+        <button name='codebrainersStudents' onClick={this.sortStudentsByBeers}>Sort by beers</button>
+
+        <StudentList students={this.state.otherStudents} />
+        <button name='otherStudents' onClick={this.clearStudents}>Clear student list</button>
+
       </div>
     );
   }

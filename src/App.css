@@ -40,3 +40,15 @@
 .green {
   color: green;
 }
+
+button {
+  font-size: 125%;
+  display: inline-block;
+  padding: 0.5em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+button + button {
+  margin-left: 0.5em;
+}
