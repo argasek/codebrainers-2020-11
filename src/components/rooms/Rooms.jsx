@@ -63,6 +63,9 @@ class Rooms extends React.PureComponent {
         })
     });
   }
+  sortByExposure = () => {
+    alert("click")
+  }
 
   render() {
     const {rooms, successRooms, inProgress} = this.state;
@@ -83,7 +86,7 @@ class Rooms extends React.PureComponent {
                 <tr>
                   <th>Id</th>
                   <th>Name</th>
-                  <th>Exposure</th>
+                  <th onClick={this.sortByExposure}>Exposure</th>
                   <th>Humidity</th>
                   <th>Temperature</th>
                   <th>Draft</th>
