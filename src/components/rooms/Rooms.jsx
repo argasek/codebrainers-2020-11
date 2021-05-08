@@ -14,6 +14,7 @@ class Rooms extends React.PureComponent {
       rooms: [],
       successRooms: undefined,
       inProgress: false,
+      numberOfClicks: 0,
     };
   }
 
@@ -64,7 +65,15 @@ class Rooms extends React.PureComponent {
     });
   }
   sortByExposure = () => {
-    alert("click")
+   let numberOfClicks = this.state.numberOfClicks;
+    const rooms = this.state.rooms;
+   const sortedRooms = [...rooms].sort((a, b)=> {
+     const exposureMapping = ['dark', 'shade', 'partsun', 'fullsun'];
+     const exposureAindex = exposureMapping.indexOf(a.exposure);
+     const exposureBindex = exposureMapping.indexOf(b.exposure);
+     return (exposureAindex - exposureBindex) * (numberOfClicks % 2 === 0 ? 1 : -1);
+   });
+   this.setState({ rooms: sortedRooms, numberOfClicks:++numberOfClicks });
   }
 
   render() {
