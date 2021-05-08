@@ -2,55 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './CategoryItem.scss';
 import { ListGroupItem } from "reactstrap";
+import {appearances, exposures, humidities, temperatures} from "../plants/PlantRow";
 
 class CategoryItem extends React.PureComponent {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      index: 0,
-      className: "category-item"
-    };
-
-    console.log('constructor(): ' + props.index);
-  }
-
-  componentDidMount() {
-    console.log('componentDidMount(): ' + this.props.index);
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log('componentDidUpdate()');
-
-    this.updateClassNameWhenIndexChanged(prevState);
-  }
-
-  updateClassNameWhenIndexChanged(prevState) {
-    const index = this.state.index;
-
-    if (prevState.index !== index) {
-      console.log(`Index changed from ${prevState.index} to ${index}`);
-      let className = `category-item active-${index}`;
-      this.setState({ className });
-    }
-  }
-
   render() {
-    const category = this.props.category;
-
-    const onClick = () => {
-      if (this.props.isLastItem === true) {
-        let index = this.state.index;
-        index = ++index === 4 ? 0 : index;
-        this.setState({ index })
-      }
-    };
 
     return (
-      <ListGroupItem className={this.state.className} onClick={ onClick }>
-        { category }
-      </ListGroupItem>
+      <tr>
+        <td>{ this.props.category.id }</td>
+        <td>{ this.props.category.name }</td>
+        <td><a href={ this.props.category.url } > {this.props.category.name}</a></td>
+
+        {/*<td>{ exposures[this.props.room.exposure] }</td>*/}
+        {/*<td>{ humidities[this.props.room.humidity] }</td>*/}
+        {/*<td>{ temperatures[this.props.room.temperature] }</td>*/}
+        {/*<td>{ appearances[this.props.room.draft] }</td>*/}
+      </tr>
     );
   }
 

@@ -1,0 +1,15 @@
+.plants-container {
+  overflow: auto;
+  max-height: 50vh;
+
+  .plants-container-header {
+    boxSizing: border-box;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background: #343A40;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+}

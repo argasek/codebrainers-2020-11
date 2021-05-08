@@ -13,9 +13,34 @@ class App extends React.PureComponent {
     this.state = {
       plantName: '',
       someSelectField: '333',
-      fertilizingFrequency: someOtherArray[someOtherArray.length - 1].value
+      fertilizingFrequency: someOtherArray[someOtherArray.length - 1].value,
+      userFullName: '',
+      userFullNameDelayed: ''
     };
   }
+
+  // componentDidMount() {
+  //   setInterval(() => {
+  //     const userFullNameDelayed = Date.now().toString();
+  //     this.setState({ userFullNameDelayed });
+  //   }, 100)
+  // }
+
+  handleUserFullNameChange = (event) => {
+    const userFullName = event.target.value;
+    console.log('onChange', userFullName);
+    this.setState({
+      userFullName: userFullName
+    });
+  };
+
+  handleUserFullNameBlur = (event) => {
+    const userFullName = this.state.userFullName;
+    console.log('onBlur', userFullName);
+    this.setState({
+      userFullNameDelayed: userFullName
+    });
+  };
 
   delayFetch(ms, func) {
     return new Promise((resolve, reject) => setTimeout(() => func(resolve, reject), ms));
@@ -32,20 +57,28 @@ class App extends React.PureComponent {
       fertilizingFrequency,
       plantName,
       someSelectField,
+      userFullName,
+      userFullNameDelayed,
     } = this.state;
 
     return (
       <Router>
-        <PlantasticNavbar/>
+        <PlantasticNavbar
+          userFullName={ userFullNameDelayed }
+        />
         <PlantasticContainer
           delayFetch={ this.delayFetch }
           someSelectField={ someSelectField }
           fertilizingFrequency={ fertilizingFrequency }
           inputOnChange={ this.inputOnChange }
           plantName={ plantName }
+          userFullName={ userFullName }
+          userFullNameDelayed={ userFullNameDelayed }
+          handleUserFullNameChange={ this.handleUserFullNameChange }
+          handleUserFullNameBlur={ this.handleUserFullNameBlur }
         />
       </Router>
-    )
+    );
   }
 }
 

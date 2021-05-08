@@ -31,7 +31,7 @@ class Categories extends React.PureComponent {
       axios.get(requestUrl)
         .then((response) => {
           const data = response.data;
-          const categories = data.map((item) => item.name);
+          const categories = data.map((item) => ({ name: item.name, id: item.id }));
           const successCategories = true;
           this.setState({ categories, successCategories });
           resolve();
