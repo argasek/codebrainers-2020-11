@@ -1,8 +1,8 @@
-import { Card, CardBody, ListGroup } from "reactstrap";
+import {Card, CardBody, ListGroup, Table} from "reactstrap";
 import React from "react";
-import CategoryItem from "components/categories/CategoryItem";
 import InProgress from "components/shared/InProgress";
 import axios from 'axios';
+import CategoryItem from "../categories/CategoryItem";
 
 const CATEGORIES_FETCH_DELAY = 500;
 
@@ -31,7 +31,7 @@ class Categories extends React.PureComponent {
       axios.get(requestUrl)
         .then((response) => {
           const data = response.data;
-          const categories = data.map((item) => ({ name: item.name, id: item.id }));
+          const categories = data.map((item) => ({ name: item.name, id: item.id, url: item.url }));
           const successCategories = true;
           this.setState({ categories, successCategories });
           resolve();
@@ -47,42 +47,40 @@ class Categories extends React.PureComponent {
   }
 
   render() {
-    const {
-      inProgress,
-      successCategories,
-      categories,
-    } = this.state;
-
+    const {categories, successCategories, inProgress} = this.state;
 
     return (
-      <Card>
+      <Card className="mb-4">
         <CardBody>
-          <div className="app-container">
-            <InProgress inProgress={inProgress} />
-            {
-              successCategories === false &&
-              <p>Nie udało się pobrać Kategorii</p>
-            }
-            {
-              successCategories &&
-              <ListGroup className="categories">
+          <InProgress inProgress={inProgress}/>
+          {
+            successCategories === false &&
+            <p>Unable to fetch categories.</p>
+          }
+          {
+            successCategories && (
+              <>
+              <Table>
+                <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Path</th>
+                </tr>
+                </thead>
+                <tbody>
                 {
-                  categories.map((item, index, arr) =>
-                    <CategoryItem
-                      category={item}
-                      label='category'
-                      key={index}
-                      isLastItem={arr.length - 1 === index}
-                      index={index}
-                    />
+                  categories.map((category, index, arr) => (
+                          <CategoryItem category={category} key={index} index={index}/>)
                   )
                 }
-              </ListGroup>
-            }
-          </div>
+                </tbody>
+              </Table>
+              </>
+          )}
         </CardBody>
       </Card>
-    )
+    );
   }
 }
 
