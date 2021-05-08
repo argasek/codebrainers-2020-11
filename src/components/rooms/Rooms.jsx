@@ -30,7 +30,13 @@ class Rooms extends React.Component {
       axios.get(requestUrl)
         .then((response) => {
           const data = response.data;
-          const rooms = data.map((item) => item.name);
+          const rooms = data.map((item) => ({
+            name: item.name,
+            exposure: item.exposure,
+            temperature: item.temperature,
+            id: item.id
+
+          }));
           const successRooms = true;
           this.setState({ rooms, successRooms });
           resolve();
@@ -63,10 +69,10 @@ class Rooms extends React.Component {
               successRooms &&
               <ListGroup className="room">
                 {
-                  rooms.map((item, index, arr) =>
+                  rooms.map((room) =>
                     <RoomItem
-                      room={item}
-                      key={index}
+                      room={room}
+                      key={room.id}
                     />
                   )
                 }

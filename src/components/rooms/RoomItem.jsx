@@ -9,14 +9,17 @@ class RoomItem extends React.PureComponent {
 
     return (
       <ListGroupItem>
-        { room }
+        { room.temperature }
+        { room.id }
+        { room.exposure }
+        { room.name }
       </ListGroupItem>
     );
   }
 }
 
 RoomItem.propTypes = {
-  room: PropTypes.string.isRequired,
+  room: PropTypes.object.isRequired,
 };
 
 
