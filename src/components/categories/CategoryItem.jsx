@@ -49,7 +49,7 @@ class CategoryItem extends React.PureComponent {
 
     return (
       <ListGroupItem className={this.state.className} onClick={ onClick }>
-        { category }
+        {category.id} {' '} { category.name }
       </ListGroupItem>
     );
   }
