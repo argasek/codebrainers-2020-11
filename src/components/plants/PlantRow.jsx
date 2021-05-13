@@ -1,136 +1,82 @@
-import React from 'react';
-
-import PropTypes from 'prop-types';
-
-import 'components/plants/PlantRow.scss';
+import React from "react";
+import "./Plant.scss";
+import find from 'lodash-es/find';
+import moment from 'moment-es6';
 import {
-  faCheckCircle,
-  faCloud,
-  faCloudSun,
-  faMoon,
-  faQuestion,
-  faSun,
-  faThermometerEmpty,
-  faThermometerFull,
-  faThermometerHalf,
-  faTimesCircle,
-  faTint,
-  faTintSlash,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Plant from 'models/Plant';
-
-
-const difficulties = {
-  1: 'low',
-  2: 'medium-low',
-  3: 'medium',
-  4: 'medium-high',
-  5: 'high',
-};
-
-const appearances = {
-  true: <FontAwesomeIcon icon={ faCheckCircle } />,
-  false: <FontAwesomeIcon icon={ faTimesCircle } />,
-};
-
-const exposures = {
-  dark: <FontAwesomeIcon icon={ faMoon } />,
-  shade: <FontAwesomeIcon icon={ faCloud } />,
-  partsun: <FontAwesomeIcon icon={ faCloudSun } />,
-  fullsun: <FontAwesomeIcon icon={ faSun } />,
-};
-
-const humidities = {
-  low: <div>
-    <FontAwesomeIcon icon={ faTint } />
-  </div>,
-  medium: <div>
-    <FontAwesomeIcon icon={ faTint } />
-    <FontAwesomeIcon icon={ faTint } />
-  </div>,
-  high: <div>
-    <FontAwesomeIcon icon={ faTint } />
-    <FontAwesomeIcon icon={ faTint } />
-    <FontAwesomeIcon icon={ faTint } />
-  </div>,
-};
-
-const temperatures = {
-  cold: <FontAwesomeIcon icon={ faThermometerEmpty } />,
-  medium: <FontAwesomeIcon icon={ faThermometerHalf } />,
-  warm: <FontAwesomeIcon icon={ faThermometerFull } />,
-};
-
-
-function secondsToDays(sec) {
-  const dayInSeconds = 86400;
-  if (sec < dayInSeconds) {
-    return <FontAwesomeIcon icon={ faQuestion } />;
-  } else {
-    return Math.round(sec / dayInSeconds);
-  }
-}
-
-function formatDate(dateString) {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  if (dateString === null) {
-    return <FontAwesomeIcon icon={ faTintSlash } />;
-  } else {
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  }
-}
-
+  plantDifficultyOptions,
+  plantExposureOptions,
+  plantExposureUnknown,
+  plantHumidityOptions,
+  plantHumidityUnknown,
+  plantTemperatureOptions,
+} from "constants/PlantConstants";
+import { plantPropTypes } from 'proptypes/PlantsPropTypes';
+import { categoriesPropTypes } from 'proptypes/CategoriesPropTypes';
+import PlantExposureIcon from 'components/plants/icons/PlantExposureIcon';
+import PlantHumidityIcon from 'components/plants/icons/PlantHumidityIcon';
+import { roomsPropTypes } from 'proptypes/RoomsPropTypes';
+import PlantBloomingIcon from 'components/plants/icons/PlantBloomingIcon';
 
 class PlantRow extends React.PureComponent {
 
+  findValueByKey(options, valueToFind) {
+    const id = options.findIndex((propValue) => propValue.id === valueToFind);
+    return (id !== -1 ? options[id].name : '¯\\_(ツ)_/¯');
+  }
+
   render() {
-    const { index, plant } = this.props;
     const {
-      blooming,
-      category,
-      categorySlug,
-      difficulty,
-      fertilizingInterval,
-      id,
-      lastFertilized,
-      lastWatered,
-      name,
-      requiredExposure,
-      requiredHumidity,
-      requiredTemperature,
-      room,
-      wateringInterval
-    } = plant;
+      plant,
+      plantCategories,
+      plantRooms,
+    } = this.props;
+
+    const asYmd = (value) => moment.isMoment(value) ? value.format('YYYY-MM-DD') : '';
+    const asAgo = (value) => moment.isMoment(value) ? value.fromNow() : '';
+
+    const plantCategory = this.findValueByKey(plantCategories, plant.category);
+    const plantDifficulty = this.findValueByKey(plantDifficultyOptions, plant.difficulty);
+    /**
+     * @type PlantExposure
+     */
+    const plantExposure = find(plantExposureOptions, { id: plant.requiredExposure }) || plantExposureUnknown;
+    /**
+     * @type PlantHumidity
+     */
+    const plantHumidity = find(plantHumidityOptions, { id: plant.requiredHumidity }) || plantHumidityUnknown;
+    const plantLastFertilized = asYmd(plant.lastFertilized);
+    const plantLastWatered = asAgo(plant.lastWatered);
+    const plantRoom = this.findValueByKey(plantRooms, plant.room);
+    const plantTemperature = this.findValueByKey(plantTemperatureOptions, plant.requiredTemperature);
 
     return (
-      <tr>
-        <td>{ index } </td>
-        <td>{ id } </td>
-        <td>{ name }</td>
-        <td>{ category }</td>
-        <td>{ categorySlug }</td>
-        <td>{ secondsToDays(wateringInterval) }</td>
-        <td>{ secondsToDays(fertilizingInterval) }</td>
-        <td>{ exposures[requiredExposure] }</td>
-        <td>{ humidities[requiredHumidity] }</td>
-        <td>{ temperatures[requiredTemperature] }</td>
-        <td>{ appearances[blooming] }</td>
-        <td>{ difficulties[difficulty] }</td>
-        <td>{ room }</td>
-        <td>{ formatDate(lastWatered) }</td>
-        <td>{ formatDate(lastFertilized) }</td>
+      <tr key={ plant.id }>
+        <td>{ plant.name }</td>
+        <td>{ plantCategory }</td>
+        <td className="plant-attribute-icon text-center" title={ plantExposure.name }>
+          <PlantExposureIcon plantExposure={ plantExposure } />
+        </td>
+        <td className="plant-attribute-icon-sm text-center">
+          <PlantHumidityIcon plantHumidity={ plantHumidity } />
+        </td>
+        <td>{ plantTemperature }</td>
+        <td className="plant-attribute-icon text-center">
+          <PlantBloomingIcon plantBlooming={ plant.blooming } />
+        </td>
+        <td>{ plantDifficulty }</td>
+        <td>{ plantRoom }</td>
+        <td>{ plantLastFertilized }</td>
+        <td>{ plantLastWatered }</td>
       </tr>
     );
   }
-
 }
 
-
 PlantRow.propTypes = {
-  plant: PropTypes.instanceOf(Plant).isRequired,
-  index: PropTypes.number.isRequired,
+  plant: plantPropTypes,
+  plantCategories: categoriesPropTypes,
+  plantRooms: roomsPropTypes,
 };
 
-export { exposures, humidities, temperatures, appearances };
 export default PlantRow;
+

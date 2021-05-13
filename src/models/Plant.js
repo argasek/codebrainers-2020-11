@@ -1,55 +1,69 @@
+import { JsonConverter, JsonObject, JsonProperty, JsonType } from 'ta-json';
+import MomentSerializer from 'serializers/MomentSerializer';
+
+@JsonObject()
 class Plant {
-    blooming = false;
-    category = undefined;
-    categorySlug = '';
-    difficulty = 0;
-    fertilizingInterval = undefined;
-    id = undefined;
-    lastFertilized = undefined;
-    lastWatered = undefined;
-    name = '';
-    requiredExposure = '';
-    requiredHumidity = '';
-    requiredTemperature = '';
-    room = undefined;
-    wateringInterval = undefined;
- 
-    fromPlain(plain) {
-        const {
-            blooming,
-            category,
-            category_slug,
-            difficulty,
-            fertilizing_interval,
-            id,
-            last_fertilized,
-            last_watered,
-            name,
-            required_exposure,
-            required_humidity,
-            required_temperature,
-            room,
-            watering_interval,
-        } = plain;
+  @JsonType(Boolean)
+  @JsonProperty()
+  blooming = false;
 
-        this.blooming = blooming;
-        this.category = category;
-        this.categorySlug = category_slug;
-        this.difficulty = difficulty;
-        this.fertilizingInterval = fertilizing_interval;
-        this.id = id;
-        this.lastFertilized = last_watered;
-        this.lastWatered = last_fertilized;
-        this.name = name;
-        this.requiredExposure = required_exposure;
-        this.requiredHumidity = required_humidity;
-        this.requiredTemperature = required_temperature;
-        this.room = room;
-        this.wateringInterval = watering_interval;
+  @JsonType(Number)
+  @JsonProperty()
+  category = undefined;
 
-        return this;
-    }
-    
+  @JsonType(String)
+  @JsonProperty()
+  categorySlug = '';
+
+  @JsonType(Number)
+  @JsonProperty()
+  difficulty = 1;
+
+  @JsonType(Number)
+  @JsonProperty()
+  fertilizingInterval = 0;
+
+  @JsonType(Number)
+  @JsonProperty()
+  id = undefined;
+
+  @JsonProperty()
+  @JsonConverter(new MomentSerializer())
+  @JsonType(String)
+  lastFertilized = undefined;
+
+  @JsonProperty()
+  @JsonConverter(new MomentSerializer())
+  @JsonType(String)
+  lastWatered = undefined;
+
+  @JsonType(String)
+  @JsonProperty()
+  name = '';
+
+  @JsonType(String)
+  @JsonProperty()
+  requiredExposure = '';
+
+  @JsonType(String)
+  @JsonProperty()
+  requiredHumidity = '';
+
+  @JsonType(String)
+  @JsonProperty()
+  requiredTemperature = '';
+
+  @JsonType(Number)
+  @JsonProperty()
+  room = undefined;
+
+  @JsonType(String)
+  @JsonProperty()
+  url = '';
+
+  @JsonType(Number)
+  @JsonProperty()
+  wateringInterval = 0;
 }
 
 export default Plant;

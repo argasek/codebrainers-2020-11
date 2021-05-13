@@ -1,156 +1,95 @@
 import React from 'react';
-import {Card, CardBody, Table, Button} from 'reactstrap';
 import axios from 'axios';
-import Room from 'components/rooms/Room';
-import InProgress from 'components/shared/InProgress';
+import Api from 'constants/Api';
+import { delay, ROOMS_FETCH_DELAY } from 'shared/Debug';
+import { plainToClass } from 'serializers/Serializer';
+import Room from 'models/Room';
 
-const ROOMS_FETCH_DELAY = 250;
+const withRooms = (WrappedComponent) => {
+  return class extends React.PureComponent {
 
-class Rooms extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      rooms: [],
-      successRooms: undefined,
-      inProgress: false,
-      numberOfExposureClicks: 0,
-      numberOfNameClicks: 0,
+    constructor(props) {
+      super(props);
+      this.state = {
+        roomsErrorMessage: '',
+        roomsInProgress: false,
+        roomsSuccess: undefined,
+        rooms: [],
+      };
+    }
+
+    /**
+     *
+     * @param {function} resolve
+     * @param {function} reject
+     * @returns {Promise}
+     */
+    fetchRooms = (resolve, reject) => {
+      return axios.get(Api.ROOMS)
+        .then((response) => this.fetchRoomsSuccess(response, resolve))
+        .catch((error) => this.fetchRoomsFailure(error, reject));
     };
-  }
 
-  componentDidMount() {
-    this.fetchRooms();
-  }
+    /**
+     * Fetch Rooms with some predefined delay.
+     * @returns {Promise<TimerHandler>}
+     */
+    fetchRoomsDelayed = () => {
+      console.log('Method Rooms.fetchRoomsDelayed() fired');
 
-  fetchRooms() {
-    const requestUrl = 'http://gentle-tor-07382.herokuapp.com/rooms/';
-    this.setState({inProgress: true});
+      const roomsInProgress = true;
+      this.setState({ roomsInProgress });
 
-    return this.props.delayFetch(ROOMS_FETCH_DELAY, (resolve, reject) => {
-      const promise = axios.get(requestUrl);
+      return delay(ROOMS_FETCH_DELAY, this.fetchRooms)
+        .finally(this.fetchRoomsFinally);
+    };
 
-      promise
-              .then((response) => {
-                const data = response.data;
-                console.log(data);
-                const rooms = data.map((item) => {
-                  const {
-                    id,
-                    name,
-                    exposure,
-                    temperature,
-                    humidity,
-                    draft,
-                  } = item;
-                  return {
-                    id,
-                    name,
-                    exposure,
-                    temperature,
-                    humidity,
-                    draft,
-                  };
-                });
-                const successRooms = true;
-                this.setState({rooms, successRooms});
-                resolve();
-              })
-              .catch((error) => {
-                this.setState({successRooms: false});
-                reject();
-              })
-              .finally(() => {
-                this.setState({inProgress: false});
-              });
-    });
-  }
+    fetchRoomsFailure = (error, reject) => {
+      const roomsSuccess = false;
+      const roomsErrorMessage = error.message;
 
-  sortByExposure = () => {
-    let numberOfExposureClicks = this.state.numberOfExposureClicks;
-    const rooms = this.state.rooms;
-    const sortedRooms = [...rooms].sort((a, b) => {
-      const exposureMapping = ['dark', 'shade', 'partsun', 'fullsun'];
-      const exposureAindex = exposureMapping.indexOf(a.exposure);
-      const exposureBindex = exposureMapping.indexOf(b.exposure);
-      return (exposureAindex - exposureBindex) * (numberOfExposureClicks % 2 === 0 ? 1 : -1);
-    });
-    this.setState({rooms: sortedRooms, numberOfExposureClicks: ++numberOfExposureClicks});
+      this.setState({
+        roomsErrorMessage,
+        roomsSuccess,
+      });
+
+      reject();
+    };
+
+    fetchRoomsFinally = () => {
+      console.log('Rooms finally');
+      const roomsInProgress = false;
+      this.setState({ roomsInProgress });
+    };
+
+    fetchRoomsSuccess = (response, resolve) => {
+      const data = response.data;
+
+      const rooms = data.map(item => plainToClass(Room, item));
+      const roomsSuccess = true;
+      const roomsErrorMessage = '';
+
+      this.setState({
+        rooms,
+        roomsErrorMessage,
+        roomsSuccess,
+      });
+
+      console.log('Fetched rooms');
+
+      resolve();
+    };
+
+    render() {
+      return (
+        <WrappedComponent
+          { ...this.state }
+          { ...this.props }
+          fetchRooms={ this.fetchRoomsDelayed }
+        />
+      );
+    }
   };
+};
 
-  sortByName = () => {
-    let numberOfNameClicks = this.state.numberOfNameClicks;
-
-    const sortedRooms = [...this.state.rooms].sort((a, b) => {
-
-      if (a.name > b.name) {
-        return (numberOfNameClicks % 2 === 0 ? 1 : -1);
-      }
-
-      if (a.name < b.name) {
-        return (numberOfNameClicks % 2 === 0 ? -1 : 1);
-      }
-
-      return 0;
-
-    });
-
-    this.setState({rooms: sortedRooms, numberOfNameClicks: ++numberOfNameClicks});
-
-  };
-
-  createRoom = () => {
-    const rooms = [...this.state.rooms];
-    rooms.push({name: 'terrace', id: 0, exposure: 'fullsun', temperature: 'medium', humidity: 'medium', draft: false});
-    this.setState({rooms: rooms});
-  }
-
-  removeRoom = (index) => {
-    const rooms = [...this.state.rooms];
-   rooms.splice(index, 1);
-   this.setState({rooms:rooms});
-  }
-
-  render() {
-    const {rooms, successRooms, inProgress} = this.state;
-
-    return (
-            <Card className="mb-4">
-              <CardBody>
-                <InProgress inProgress={inProgress}/>
-                {
-                  successRooms === false &&
-                  <p>Unable to fetch rooms.</p>
-                }
-                {
-                  successRooms && (
-                          <>
-                            <Table>
-                              <thead>
-                              <tr>
-                                <th>Id</th>
-                                <th onClick={this.sortByName}>Name</th>
-                                <th onClick={this.sortByExposure}>Exposure</th>
-                                <th>Humidity</th>
-                                <th>Temperature</th>
-                                <th>Draft</th>
-                                <th>Delete </th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              {
-                                rooms.map((room, index, arr) => (
-                                        <Room room={room} key={index} index={index} removeRoom={this.removeRoom}/>)
-                                )
-                              }
-                              </tbody>
-                            </Table>
-                          </>
-                  )}
-                <Button onClick={this.createRoom}> Add Room </Button>
-              </CardBody>
-            </Card>
-    );
-  }
-}
-
-export default Rooms;
+export default withRooms;

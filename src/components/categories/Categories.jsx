@@ -1,88 +1,95 @@
-import {Card, CardBody, ListGroup, Table} from "reactstrap";
-import React from "react";
-import InProgress from "components/shared/InProgress";
+import React from 'react';
 import axios from 'axios';
-import CategoryItem from "../categories/CategoryItem";
+import Api from 'constants/Api';
+import { CATEGORIES_FETCH_DELAY, delay } from 'shared/Debug';
+import { plainToClass } from 'serializers/Serializer';
+import Category from 'models/Category';
 
-const CATEGORIES_FETCH_DELAY = 500;
+const withCategories = (WrappedComponent) => {
+  return class extends React.PureComponent {
 
-class Categories extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      inProgress: false,
-      successCategories: undefined,
-      categories: [],
+    constructor(props) {
+      super(props);
+      this.state = {
+        categoriesErrorMessage: '',
+        categoriesInProgress: false,
+        categoriesSuccess: undefined,
+        categories: [],
+      };
+    }
+
+    /**
+     *
+     * @param {function} resolve
+     * @param {function} reject
+     * @returns {Promise}
+     */
+    fetchCategories = (resolve, reject) => {
+      return axios.get(Api.CATEGORIES)
+        .then((response) => this.fetchCategoriesSuccess(response, resolve))
+        .catch((error) => this.fetchCategoriesFailure(error, reject));
     };
-  }
 
-  componentDidMount() {
-    this.fetchCategories()
-      .finally(() => {
-        this.setState({ inProgress: false });
-      })
-  }
+    /**
+     * Fetch Categories with some predefined delay.
+     * @returns {Promise<TimerHandler>}
+     */
+    fetchCategoriesDelayed = () => {
+      console.log('Method Categories.fetchCategoriesDelayed() fired');
 
-  fetchCategories() {
+      const categoriesInProgress = true;
+      this.setState({ categoriesInProgress });
 
-    const requestUrl = 'http://gentle-tor-07382.herokuapp.com/categories/';
-    this.setState({ inProgress: true });
-    return this.props.delayFetch(CATEGORIES_FETCH_DELAY, (resolve, reject) => {
-      axios.get(requestUrl)
-        .then((response) => {
-          const data = response.data;
-          const categories = data.map((item) => ({ name: item.name, id: item.id, url: item.url }));
-          const successCategories = true;
-          this.setState({ categories, successCategories });
-          resolve();
-        })
-        .catch((error) => {
-          this.setState({ successCategories: false });
-          reject();
-        })
-        .finally(() => {
-          console.log('Resolved');
-        });
-    });
-  }
+      return delay(CATEGORIES_FETCH_DELAY, this.fetchCategories)
+        .finally(this.fetchCategoriesFinally);
+    };
 
-  render() {
-    const {categories, successCategories, inProgress} = this.state;
+    fetchCategoriesFailure = (error, reject) => {
+      const categoriesSuccess = false;
+      const categoriesErrorMessage = error.message;
 
-    return (
-      <Card className="mb-4">
-        <CardBody>
-          <InProgress inProgress={inProgress}/>
-          {
-            successCategories === false &&
-            <p>Unable to fetch categories.</p>
-          }
-          {
-            successCategories && (
-              <>
-              <Table>
-                <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Path</th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                  categories.map((category, index, arr) => (
-                          <CategoryItem category={category} key={index} index={index}/>)
-                  )
-                }
-                </tbody>
-              </Table>
-              </>
-          )}
-        </CardBody>
-      </Card>
-    );
-  }
-}
+      this.setState({
+        categoriesErrorMessage,
+        categoriesSuccess,
+      });
 
+      reject();
+    };
 
-export default Categories;
+    fetchCategoriesFinally = () => {
+      console.log('Categories finally');
+      const categoriesInProgress = false;
+      this.setState({ categoriesInProgress });
+    };
+
+    fetchCategoriesSuccess = (response, resolve) => {
+      const data = response.data;
+
+      const categories = data.map(item => plainToClass(Category, item));
+      const categoriesSuccess = true;
+      const categoriesErrorMessage = '';
+
+      this.setState({
+        categories,
+        categoriesErrorMessage,
+        categoriesSuccess,
+      });
+
+      console.log('Fetched categories');
+
+      resolve();
+    };
+
+    render() {
+      return (
+        <WrappedComponent
+          { ...this.state }
+          { ...this.props }
+          fetchCategories={ this.fetchCategoriesDelayed }
+        />
+      );
+    }
+  };
+};
+
+export default withCategories;
