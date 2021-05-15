@@ -2,7 +2,7 @@ import { Card, CardBody } from "reactstrap";
 import React from "react";
 import axios from "axios";
 import InProgress from 'components/shared/InProgress';
-import PlantsTable from "components/plants/PlantsTable";
+import Plants from "components/plants/Plants";
 import { delay, PLANTS_FETCH_DELAY } from "shared/Debug";
 import OperationFailed from 'components/shared/OperationFailed';
 import Api from 'constants/Api';
@@ -109,7 +109,7 @@ class PlantsContainer extends React.PureComponent {
 
           {
             success &&
-            <PlantsTable
+            <Plants
               categories={ categories }
               plants={ plants }
               rooms={ rooms }
